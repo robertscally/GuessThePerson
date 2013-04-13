@@ -4,7 +4,7 @@
   background-color:;
 }
 
-.centered { 
+body { 
   float: none; 
   margin:0 auto;  
 }

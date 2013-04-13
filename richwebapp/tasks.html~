@@ -30,7 +30,7 @@
 <template name="hello">
   <h1>Hello World!</h1>
 {{#each helloCont}}
-<img src="{{_id}}" />
+<img src="{{name}}" />
          {{/each}}
   <input type="button" value="Click Me" />
 </template>
