@@ -1,10 +1,15 @@
 /* CSS declarations go here */
-#main_container { 
+#main_container 
+{ 
   margin:2em;
   background-color:;
 }
 
-.centered { 
+img {
+	width:10em;
+}
+.centered 
+{ 
   float: none; 
   margin:0 auto;  
 }

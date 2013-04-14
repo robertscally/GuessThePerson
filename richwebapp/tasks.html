@@ -6,31 +6,86 @@
 <body>
 <div class="container-fluid centered">
   <div class="row-fluid">
-    <div id="main_container" class="span10">
-	    <div id="guess_container" class="span3">
-	      Guesses go here!
-	      {{loginButtons}}
-	    </div>
-	    <div id="photo_container" class="span4">
+  	<div class="span3">
+    <!-- empty -->
+  </div>
+    <div id="main_container" class="span8">
+	    
+	    <div id="photo_container" class="span5">
 	      <!--Body content-->
+	      <div class="row">
 	      {{> hello}}
+	      </div>
+	      <div class="row">
+	      {{> makeGuess}}
+	      </div>
 	    </div>
-	    <div id="leaderboard_container" class="span3">
-	       Leaderboard
-	       <table class="table table-striped">
-		  <tr><td>John Smith</td></tr>
-	       </table>
+	    
+	    <div class="span7">
+		    <div class="row">
+			    <div class="row">
+				    <div id="leaderboard_container" class="span5">
+				       Leaderboard 
+				       {{> leaderBoard}}
+				    </div>
+			    </div>
+			    <div class="row">
+				    <div id="guess_container" class="span5">
+				      Latest Guesses!
+				      {{> guessBox}}
+				      {{loginButtons}}
+				    </div>
+				</div>
+		     </div>
 	    </div>
     </div>
+  	<div class="span3">
+    <!-- empty -->
   </div>
 </div>
   
 </body>
 
 <template name="hello">
-  <h1>Hello World!</h1>
-{{#each helloCont}}
-<img src="{{_id}}" />
-         {{/each}}
-  <input type="button" value="Click Me" />
+  <h1>Who is this?</h1>
+  <h3><div id="guessCounter">10</div> Guesses remaining</h3>
+
+	<img src="1.jpg" />
+	
+	<p>Answer: <div class="text-success" id="answer"></div></p>
 </template>
+
+<template name="makeGuess">
+  <input id="guessInput" type="text" />
+  <input class="guess" type="button" value="Try" />
+</template>
+
+<template name="leaderBoard">
+	{{#with getUserName}}
+		{{this}}
+	{{/with}}
+  <table class="table table-striped table-bordered">
+	       {{#each getTopPlayers}}
+	       		<tr>
+	       			<td>{{name}}</td>
+	       			<td>{{score}}</td>
+	       		</tr>
+	       {{/each}}
+	       </table>
+</template>
+
+<template name="guessBox">
+  <table class="table table-striped table-bordered">
+  	<tbody>
+	       {{#each getGuesses}}
+	       		
+	       		<tr>
+	       			<td>{{guess}}</td>
+	       			<td>{{user.username}}</td>
+	       		</tr>
+	       		
+	       {{/each}}
+	       </tbody>
+	       </table>
+</template>
+
