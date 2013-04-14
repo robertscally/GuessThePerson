@@ -5,7 +5,7 @@ Guesses = new Meteor.Collection("guesses");
 
 var counter = 10;
 var level = 1;
-var numImages = 10;
+var numImages = 2;
 
 if (Meteor.isClient) 
 {
@@ -19,15 +19,11 @@ if (Meteor.isClient)
   	}
   	else
   	{
-  		//$("#answer").html("<strong>"+getFamousName()+"</strong>");
-  		displayMessage("Answer: "+getFamousName());
-  		
-	  	nextLevel();
-  	}
-  };
-  
-  nextLevel = function () 
-  {
+  		var n = {};
+		n['level'] = level;
+	  	
+	  	//var answer = ;
+  	
   		if ((level+1) <= numImages)
   		{
   			level = level+1;
@@ -37,21 +33,12 @@ if (Meteor.isClient)
   			level = 1;
   		}
   		
-  		$("img").attr("src",level+".jpg");
+  		$("img").attr("src",level+".jpg");	
   		
   		counter = 10;
-  		
   		$("#guessCounter").html(counter);	
-  };
-  
-  getFamousName = function () 
-  {
-  	var n = {};
-	n['level'] = level;
-  	
-  	var famousName = Images.findOne(n);
-  	
-  	return famousName.answer;
+  		$("#answer").html("George Orwell");
+  	}
   };
   
   correctGuess = function (guess) 
@@ -71,19 +58,22 @@ if (Meteor.isClient)
   	}
   };
 
-  displayMessage = function(message)
+  Template.hello.getPhoto = function()
   {	
-  		$('#alert').html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
+  	
+			
+				
+	    //return Images.findOne(n);
   };
   
   Template.leaderBoard.getTopPlayers = function()
   {
-    return Players.find({}, {sort: {score: '-1'}, limit: 5});
+    return Leaderboard.find({}, {sort: {score: '-1'}, limit: 10});
   };
   
   Template.guessBox.getGuesses = function()
   {
-    return Guesses.find({}, {sort: {date: '-1'}, limit: 5});
+    return Guesses.find({}, {sort: {date: '-1'}, limit: 10});
   };
   
   Template.leaderBoard.getUserName = function()
@@ -105,30 +95,22 @@ if (Meteor.isClient)
       // template data, if any, is available in 'this'
       if (typeof console !== 'undefined')
       {
-      	var guess = $("#guessInput").val();
+      	var str = $("#guessInput").val();
       	
-		$("#guessInput").val('');
+//      	$(this).html("hello");
       	
       	var n = {};
-		n['guess'] = guess;
+		n['guess'] = str;
 		n['user'] = Players.findOne({_id: Meteor.userId()});
-		n['correct'] = correctGuess(guess);
 		n['date'] = new Date();
       	
-      	console.log(guess);
-      	
+      	console.log(str);
       	
       	Guesses.insert(n);
       	
-      	var m = {};
-		m['score'] = 10;
-      	
-      	if(correctGuess(guess))
-      	{	
-      		Players.update({_id: Meteor.userId()} ,{ $inc: m});
-      		//$("#guessCounter").html(10);
-      		nextLevel();
-      		displayMessage("You Win!");	
+      	if(correctGuess())
+      	{
+      		$("#guessCounter").html(10);	
   			console.log("You Won!!!");
       	}
       	else
@@ -191,18 +173,8 @@ if (Meteor.isServer)
   	
   	//Images.remove({});
   	/*level = 1;*/
-  	/*Images.insert({level: 1, name: "1.jpg", answer: "George Orwell"});
-  	Images.insert({level: 2, name: "2.jpg", answer: "Sergey Brin"});
-  	Images.insert({level: 3, name: "3.jpg", answer: "Mark Zuckerberg"});
-  	Images.insert({level: 4, name: "4.jpg", answer: "Leonardo Dicaprio"});
-  	Images.insert({level: 5, name: "5.jpg", answer: "Ozzy Osbourne"});
-  	Images.insert({level: 6, name: "6.jpg", answer: "Bob Marley"});
-  	Images.insert({level: 7, name: "7.jpg", answer: "Mila Kunis"});
-  	Images.insert({level: 8, name: "8.jpg", answer: "Liam Neeson"});
-  	Images.insert({level: 9, name: "9.jpg", answer: "Angelina Jolie"});
-  	Images.insert({level: 10, name: "10.jpg", answer: "John Lennon"});
-  	*/
-  	
+  	//Images.insert({level: 1, name: "1.jpg", answer: "George Orwell"});
+  	//Images.insert({level: 2, name: "2.jpg", answer: "Sergey Brin"});
   	//Uncomment folowing to remove all data from a database
   	//Guesses.remove({});
     

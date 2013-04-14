@@ -1,0 +1,36 @@
+
+<head>
+  <title>tasks</title>
+</head>
+
+<body>
+<div class="container-fluid centered">
+  <div class="row-fluid">
+    <div id="main_container" class="span10">
+	    <div id="guess_container" class="span3">
+	      Guesses go here!
+	      {{loginButtons}}
+	    </div>
+	    <div id="photo_container" class="span4">
+	      <!--Body content-->
+	      {{> hello}}
+	    </div>
+	    <div id="leaderboard_container" class="span3">
+	       Leaderboard
+	       <table class="table table-striped">
+		  <tr><td>John Smith</td></tr>
+	       </table>
+	    </div>
+    </div>
+  </div>
+</div>
+  
+</body>
+
+<template name="hello">
+  <h1>Hello World!</h1>
+{{#each helloCont}}
+<img src="{{name}}" />
+         {{/each}}
+  <input type="button" value="Click Me" />
+</template>

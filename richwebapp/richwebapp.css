@@ -1,8 +1,17 @@
 /* CSS declarations go here */
+
+body {
+	background-color:#474747;
+}
+
 #main_container 
 { 
   margin:2em;
   background-color:;
+}
+
+#leaderTable, #guessTable {
+  background-color:white;
 }
 
 img {
@@ -12,4 +21,14 @@ img {
 { 
   float: none; 
   margin:0 auto;  
+}
+
+h1, h3 {
+	color:white;
+}
+
+#alert {
+	margin:2em 0;
+	color:#416600;
+	font-weight:bold;
 }
