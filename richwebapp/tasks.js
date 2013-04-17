@@ -164,6 +164,21 @@ if (Meteor.isClient)
 }
 if (Meteor.isServer) 
 {
+	
+	Accounts.onCreateUser(function(options, user) 
+    {
+    	//var user = Meteor.user();
+		//Meteor.users.find({ _id: Meteor.userId() },{$set: { 'username': 'robscally' },});
+   
+    	var n = {};
+		n['_id'] = Meteor.userId();
+		//n[] = ;
+		
+    	Players.insert(n);
+ 		//console.log("New user created!" + user.emails[0].address);
+    });
+    
+	/*
 	Meteor.publish('updateUsername', function () {
   var user = Meteor.user();
 	Meteor.users.update(
@@ -185,7 +200,8 @@ if (Meteor.isServer)
    
     console.log("Username updated"+user.username);
  };
-  
+  */
+ 
   Meteor.startup(function () 
   {
   	
@@ -207,10 +223,7 @@ if (Meteor.isServer)
   	//Guesses.remove({});
     
     // code to run on server at startup
-    Accounts.onCreateUser(function(options, user) 
-    {
- 		//console.log("New user created!" + user.emails[0].address);
-    });
+    
   });
 //console.log(Meteor.user().profile.name);
 }
