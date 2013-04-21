@@ -1,7 +1,4 @@
-Players = new Meteor.Collection("players");
-Images = new Meteor.Collection("images");
-Leaderboard = new Meteor.Collection("leaderboard");
-Guesses = new Meteor.Collection("guesses");
+
 
 var counter = 10;
 var level = 1;
@@ -9,6 +6,22 @@ var numImages = 10;
 
 if (Meteor.isClient) 
 {
+	Meteor.subscribe("players");
+  	Meteor.subscribe("users");
+  	Meteor.subscribe("guesses");
+  	Meteor.subscribe("images");
+	
+	Players = new Meteor.Collection("players");
+	Images = new Meteor.Collection("images");
+	Leaderboard = new Meteor.Collection("leaderboard");
+	Guesses = new Meteor.Collection("guesses");
+	
+	
+	Accounts.ui.config({
+  
+  	passwordSignupFields: 'USERNAME_ONLY'
+});
+    	
 	//$("img").attr("src",level+".jpg");	
 	
   countDownGuess = function (ans) 
@@ -73,21 +86,23 @@ if (Meteor.isClient)
 
   displayMessage = function(message)
   {	
-  		$('#alert').html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
+  	$('#alert').html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>');
   };
   
   Template.leaderBoard.getTopPlayers = function()
   {
-    return Players.find({}, {sort: {score: '-1'}, limit: 5});
+  	return Players.find({}, {sort: {score: '-1'}, limit: 5});
   };
   
   Template.guessBox.getGuesses = function()
   {
-    return Guesses.find({}, {sort: {date: '-1'}, limit: 5});
+    	return Guesses.find({}, {sort: {date: '-1'}, limit: 5});
   };
   
   Template.leaderBoard.getUserName = function()
   {
+  	
+  	/*
 	  var user = Meteor.user();
 	  if (user && user.emails)
 	  {
@@ -95,100 +110,134 @@ if (Meteor.isClient)
 	  	console.log(user.username);
 	  	console.log(user.emails[0].address);
 	    return user.emails[0].address;
-	  } 
+	  }*/ 
   };
   
   Template.makeGuess.events(
   {
-    'click .guess' : function () 
-    {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-      {
-      	var guess = $("#guessInput").val();
-      	
-		$("#guessInput").val('');
-      	
-      	var n = {};
-		n['guess'] = guess;
-		n['user'] = Players.findOne({_id: Meteor.userId()});
-		n['correct'] = correctGuess(guess);
-		n['date'] = new Date();
-      	
-      	console.log(guess);
-      	
-      	
-      	Guesses.insert(n);
-      	
-      	var m = {};
-		m['score'] = 10;
-      	
-      	if(correctGuess(guess))
-      	{	
-      		Players.update({_id: Meteor.userId()} ,{ $inc: m});
-      		//$("#guessCounter").html(10);
-      		nextLevel();
-      		displayMessage("You Win!");	
-  			console.log("You Won!!!");
-      	}
-      	else
-      	{
-	      	countDownGuess();
-	    }
-      }
+  	'click .guess' : function () 
+    	{
+     		// template data, if any, is available in 'this'
+      		if (typeof console !== 'undefined')
+      		{
+		      	var guess = $("#guessInput").val();
+		      	
+				$("#guessInput").val('');
+				 
+				var user = Meteor.user();
+				 	
+				var n = {};
+				n['user_id'] = Meteor.userId();
+				n['username'] = user.username;
+				n['score'] = 0;
+			
+				console.log(Meteor.userId() + " " + user.username);
+				
+				var m = {};
+				m['username'] = Meteor.user().username;
+		
+		
+				if(typeof Players.findOne(m) === 'undefined')
+				{
+					console.log("Inserting new player!");
+					
+					Players.insert(n);
+				}	
+	    	
+			 	var aPlayer = Players.findOne({username: Meteor.user().username});
+				Session.set("player_id",aPlayer._id);
+
+				var currentUsername = Meteor.user().username;
+				
+			 	var n = {};
+				n['guess'] = guess;
+				n['username'] = currentUsername;
+				n['correct'] = correctGuess(guess);
+				n['date'] = new Date();
+		      	
+		      	console.log(guess);
+		      	
+		      	Guesses.insert(n);
+		      	
+		      	var m = {};
+				m['score'] = 10;
+		      	
+		      	if(correctGuess(guess))
+		      	{	
+				 	var p = {};
+					p['_id'] = Session.get("player_id");
+					
+		      		Players.update(p,{ $inc: m});
+		      		//$("#guessCounter").html(10);
+		      		nextLevel();
+		      		displayMessage("You Win!");	
+		  			console.log("You Won!!!");
+	      		}
+	      		else
+	      		{
+			      	countDownGuess();
+		    		}
+	      }
      }
   });
   
-  Template.hello.events(
-  {
-    'click input' : function () 
-    {
-    	
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-      {
-      	var user = Meteor.user();
-		Players.update(
-	   { _id: Meteor.userId() },
-	   {
-	     $set: { username: "robobear" },
-	   });
-	   
-	   //Players.insert({name: "John Paul", score: "20"});
-	    console.log("Username updated"+ Players.findOne({username: "robobear"}));
-      	//updateUsername();
-       
-      }
-    }
-  });
+  
 }
 if (Meteor.isServer) 
 {
+	Players = new Meteor.Collection("players");
+	Images = new Meteor.Collection("images");
+	Leaderboard = new Meteor.Collection("leaderboard");
+	Guesses = new Meteor.Collection("guesses");
+
+	Meteor.publish("players", function () 
+	{
+  		return Players.find(); // everything
+	});
 	
-	Accounts.onCreateUser(function(options, user) 
-    {
-    	//var user = Meteor.user();
+	Meteor.publish("guesses", function () 
+	{
+  		return Guesses.find(); // everything
+	});
+	
+	Meteor.publish("images", function () 
+	{
+  		return Images.find(); // everything
+	});
+	
+	Meteor.publish("users", function () 
+	{
+  		return Meteor.users.find({}); // everything
+	});
+
+	/*Accounts.onCreateUser(function(options, user) 
+    	{
+    		//var user = Meteor.user();
 		//Meteor.users.find({ _id: Meteor.userId() },{$set: { 'username': 'robscally' },});
-   
-    	var n = {};
-		n['_id'] = Meteor.userId();
+   		
+    		var n = {};
+		n['user_id'] = user._id;
+		n['username'] = user.username; //emails[0].address;
+		n['score'] = 0;
 		//n[] = ;
 		
-    	Players.insert(n);
- 		//console.log("New user created!" + user.emails[0].address);
-    });
+    		Players.insert(n);
+ 		
+ 			
+ 		console.log("New user created! " + user._id +" "+ user.username);
+    	});*/
     
 	/*
 	Meteor.publish('updateUsername', function () {
-  var user = Meteor.user();
+  	var user = Meteor.user();
 	Meteor.users.update(
-   { _id: Meteor.userId() },
-   {
-     $set: { 'username': 'robscally' },
-   });
+   	{ _id: Meteor.userId() },
+   	{
+     		$set: { 'username': 'robscally' },
+   	});
    
-    console.log("Username updated"+user.username);
-});
+    	console.log("Username updated"+user.username);
+	});
 	updateUsername = function()
 	{
 	var user = Meteor.user();
@@ -204,7 +253,8 @@ if (Meteor.isServer)
  
   Meteor.startup(function () 
   {
-  	
+  	//Guesses.remove({});
+	//Players.remove({});
   	//Images.remove({});
   	/*level = 1;*/
   	/*Images.insert({level: 1, name: "1.jpg", answer: "George Orwell"});
@@ -228,4 +278,3 @@ if (Meteor.isServer)
 //console.log(Meteor.user().profile.name);
 }
 
-//Images.insert({name: "george.jpg", answer: "George Orwell"});
