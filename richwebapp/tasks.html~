@@ -6,31 +6,93 @@
 <body>
 <div class="container-fluid centered">
   <div class="row-fluid">
-    <div id="main_container" class="span10">
-	    <div id="guess_container" class="span3">
-	      Guesses go here!
-	      {{loginButtons}}
-	    </div>
-	    <div id="photo_container" class="span4">
+  	<div class="span3">
+    <!-- empty -->
+  </div>
+    <div id="main_container" class="span8">
+	    
+	    <div id="photo_container" class="span5">
 	      <!--Body content-->
-	      {{> hello}}
+	      <div class="row">
+	      	<div id="leaderboard_container" class="span11">
+	      	{{> hello}}
+	      	</div>
+	      </div>
+	      <div class="row">
+	      {{> makeGuess}}
+	      </div>
 	    </div>
-	    <div id="leaderboard_container" class="span3">
-	       Leaderboard
-	       <table class="table table-striped">
-		  <tr><td>John Smith</td></tr>
-	       </table>
+	    
+	    <div class="span7">
+		    <div class="row">
+			    <div class="row">
+				    <div id="leaderboard_container" class="span5">
+				       <h3>Leaderboard</h3>
+				       {{> leaderBoard}}
+				    </div>
+			    </div>
+			    <div class="row">
+				    <div id="guess_container" class="span5">
+				      <h3>Latest Guesses!</h3>
+				      {{> guessBox}}
+				      {{loginButtons}}
+				    </div>
+				</div>
+		     </div>
 	    </div>
     </div>
+  	<div class="span3">
+    <!-- empty -->
   </div>
 </div>
   
+  
+
 </body>
 
 <template name="hello">
-  <h1>Hello World!</h1>
-{{#each helloCont}}
-<img src="{{name}}" />
-         {{/each}}
-  <input type="button" value="Click Me" />
+  <h1>Who is this?</h1>
+  <h3><span id="guessCounter">10</span> Guesses remaining</h3>
+
+	<img src="1.jpg" />
+	<div class="span8">
+		<div id = "alert"></div>
+	</div>
 </template>
+
+<template name="makeGuess">
+  <input id="guessInput" value="" type="text" autofocus placeholder="Make a guess" />
+  <button class="btn btn-small btn-primary guess" type="submit">Try</button>-->
+</template>
+
+<template name="leaderBoard">
+	<table id="leaderTable" class="table table-striped table-bordered">
+		{{#each getTopPlayers}}
+			<tr>
+				<td><i class="icon-user"></i></td>
+				<td>{{username}}</td>
+				<td>{{score}}</td>
+			</tr>
+		{{/each}}
+	</table>
+</template>
+
+<template name="guessBox">
+  <table id="guessTable" class="table table-striped table-bordered">
+  	<tbody>
+	       {{#each getGuesses}}
+       			{{#if correct}}
+	       		<tr id="guessRow" class="success">
+	       		{{else}}
+	       		<tr id="guessRow" class="error">
+	       		{{/if}}
+	       			<td><i class="icon-chevron-right"></i></td>
+	       			<td>{{guess}}</td>
+	       			<td>{{username}}</td>
+	       		</tr>
+	       {{/each}}
+	       </tbody>
+	       </table>
+</template>
+
+

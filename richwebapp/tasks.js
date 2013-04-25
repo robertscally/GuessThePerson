@@ -18,26 +18,25 @@ if (Meteor.isClient)
 	
 	
 	Accounts.ui.config({
-  
-  	passwordSignupFields: 'USERNAME_ONLY'
-});
-    	
-	//$("img").attr("src",level+".jpg");	
 	
-  countDownGuess = function (ans) 
-  {
-  	if((counter-1) > 0)
-  	{
-  		$("#guessCounter").html(--counter);	
-  	}
-  	else
-  	{
-  		//$("#answer").html("<strong>"+getFamousName()+"</strong>");
-  		displayMessage("Answer: "+getFamousName());
-  		
-	  	nextLevel();
-  	}
-  };
+  		passwordSignupFields: 'USERNAME_ONLY'
+	
+	});	
+	
+	countDownGuess = function (ans) 
+	{
+		if((counter-1) > 0)
+	  	{
+	  		$("#guessCounter").html(--counter);	
+	  	}
+	  	else
+	  	{
+	  		//$("#answer").html("<strong>"+getFamousName()+"</strong>");
+	  		displayMessage("Answer: "+getFamousName());
+	  		
+		  	nextLevel();
+	  	}
+	};
   
   nextLevel = function () 
   {
@@ -113,10 +112,37 @@ if (Meteor.isClient)
 	  }*/ 
   };
   
+  //console.log($("#guessInput").val());
+  /*
+  $("#guessInput").keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+        //$(".guess").click();
+        console.log("enter pressed");
+        
+        makeAGuess();
+    }
+  }*/
+  
   Template.makeGuess.events(
   {
+  	"keydown #guessInput": function(event)
+  	{
+    		if(event.which == 13)
+    		{
+    			makeAGuess();
+    		}
+    	}
+  });
+  
+ /* Template.makeGuess.events(
+  {
   	'click .guess' : function () 
+    	*/
+    	makeAGuess = function()
     	{
+    	
      		// template data, if any, is available in 'this'
       		if (typeof console !== 'undefined')
       		{
@@ -142,7 +168,7 @@ if (Meteor.isClient)
 					console.log("Inserting new player!");
 					
 					Players.insert(n);
-				}	
+				}			    
 	    	
 			 	var aPlayer = Players.findOne({username: Meteor.user().username});
 				Session.set("player_id",aPlayer._id);
@@ -178,8 +204,8 @@ if (Meteor.isClient)
 			      	countDownGuess();
 		    		}
 	      }
-     }
-  });
+     
+  };
   
   
 }
@@ -257,7 +283,7 @@ if (Meteor.isServer)
 	//Players.remove({});
   	//Images.remove({});
   	/*level = 1;*/
-  	/*Images.insert({level: 1, name: "1.jpg", answer: "George Orwell"});
+  	Images.insert({level: 1, name: "1.jpg", answer: "George Orwell"});
   	Images.insert({level: 2, name: "2.jpg", answer: "Sergey Brin"});
   	Images.insert({level: 3, name: "3.jpg", answer: "Mark Zuckerberg"});
   	Images.insert({level: 4, name: "4.jpg", answer: "Leonardo Dicaprio"});
@@ -267,7 +293,7 @@ if (Meteor.isServer)
   	Images.insert({level: 8, name: "8.jpg", answer: "Liam Neeson"});
   	Images.insert({level: 9, name: "9.jpg", answer: "Angelina Jolie"});
   	Images.insert({level: 10, name: "10.jpg", answer: "John Lennon"});
-  	*/
+  	
   	
   	//Uncomment folowing to remove all data from a database
   	//Guesses.remove({});
