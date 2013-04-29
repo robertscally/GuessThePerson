@@ -21,7 +21,7 @@ How to view application:
 --------------------------------------------
 Visit the following address to view the 
 application:
-robertjscally.meteor.com
+http://robertjscally.meteor.com
 
 
 Third party code:
