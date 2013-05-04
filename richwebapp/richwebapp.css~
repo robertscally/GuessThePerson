@@ -1,10 +1,56 @@
 /* CSS declarations go here */
-#main_container { 
+
+body {
+	background-color:#474747;
+}
+
+#main_container 
+{ 
   margin:2em;
   background-color:;
 }
 
-body { 
+
+
+#loginPopup 
+{
+	text-align:left;
+	height:20em;
+	padding:2em;
+}
+
+#leaderTable, #guessTable 
+{
+  background-color:white;
+}
+
+img {
+	width:10em;
+}
+.centered 
+{ 
   float: none; 
   margin:0 auto;  
+}
+
+h1, h3 {
+	color:white;
+}
+
+#alert {
+	margin:2em 0;
+	color:#416600;
+	font-weight:bold;
+}
+
+#popup {
+	color:black;
+}
+
+.modal-header h3 {
+	color:black;
+}
+
+#loginBut {
+	
 }

@@ -20,6 +20,7 @@
 	      </div>
 	      <div class="row">
 	      {{> makeGuess}}
+	      
 	      </div>
 	    </div>
 	    
@@ -35,7 +36,7 @@
 				    <div id="guess_container" class="span5">
 				      <h3>Latest Guesses!</h3>
 				      {{> guessBox}}
-				      {{loginButtons}}
+				      
 				    </div>
 				</div>
 		     </div>
@@ -65,8 +66,35 @@
 <div id="guessCont">
 </div>
 
-  <!--<input id="guessInput" type="text" autofocus placeholder="Make a guess" data-provide="typeahead" />
-  <!--<button class="btn btn-small btn-primary guess" type="submit">Try</button>-->
+	<div id="popup" class="modal hide fade in" style="display: none; ">  
+			<div class="modal-header">  
+				<a class="close" data-dismiss="modal">×</a>  
+				<h3>Login or Register</h3>  
+			</div>  
+	
+			<div  id="loginPopup" class="modal-body">  
+				{{loginButtons}}               
+			</div>  
+			
+			Hello
+	
+			<divclass="modal-footer">  
+				<a href="#" class="btn" data-dismiss="modal">Close</a>  
+			</div> 
+		
+		<p><a id="loginBut" data-toggle="modal" data-backdrop="false" href="#popup" class="btn btn-primary btn-large">
+		{{#if userLoggedIn}}
+			Logout
+		{{else}}
+	     	Login
+	     {{/if}}
+		</a>
+		</p>  
+		
+	</div>  
+	
+	<!--<input id="guessInput" type="text" autofocus placeholder="Make a guess" data-provide="typeahead" />
+	<!--<button class="btn btn-small btn-primary guess" type="submit">Try</button>-->
 </template>
 
 <template name="leaderBoard">

@@ -10,7 +10,9 @@ body {
   background-color:;
 }
 
-#leaderTable, #guessTable {
+
+#leaderTable, #guessTable 
+{
   background-color:white;
 }
 
@@ -30,5 +32,29 @@ h1, h3 {
 #alert {
 	margin:2em 0;
 	color:#416600;
+	font-weight:bold;
+}
+
+#popup {
+	color:black;
+}
+
+.modal-header h3 {
+	color:black;
+}
+
+#loginBut {
+	
+}
+
+#loginPopup 
+{
+	text-align:left;
+	height:20em;
+	padding:2em;
+}
+
+#loginPopup a
+{
 	font-weight:bold;
 }

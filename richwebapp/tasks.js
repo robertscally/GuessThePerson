@@ -137,16 +137,39 @@ if (Meteor.isClient)
 		return Guesses.find({}, {sort: {date: '-1'}, limit: 5});
 	};
 
+	Template.makeGuess.userLoggedIn = function()
+	{
+		if(Meteor.user() === null)
+		{
+			/*$('#popup').modal(
+			{
+  				backdrop: false
+			})
+			$('#popup').modal('show');
+			*/
+			return false;
+		}
+		else
+		{
+			//$('#popup').modal('hide');
+			return true;
+		}
+	};
 
 	/* This function is called when the makeGuess template 
 	   is first rendered */
 	Template.makeGuess.rendered = function()
 	{
-		// generate an input box to allow the user to guess 
-		$("#guessCont").html("<input id=\"guessInput\" type=\"text\" autofocus placeholder=\"Make a guess\" />");
+		//$('#popup').modal('hide');
+		
+		if(Meteor.user() !== null)
+		{
+			// generate an input box to allow the user to guess 
+			$("#guessCont").html("<input id=\"guessInput\" type=\"text\" autofocus placeholder=\"Make a guess\" />");
+		}
 	};
-
-
+	
+	
   	/* Whenever the enter key is pressed inside the guess 
   	   input box, the makeAGuess function is called */
 	Template.makeGuess.events(
