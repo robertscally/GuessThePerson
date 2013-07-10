@@ -7,7 +7,7 @@ Due: 6 May 2013
 
 Individual:
 --------------------------------------------
-Robert Scally - C09768301
+Robert Scally 
 
 
 Application Idea:
